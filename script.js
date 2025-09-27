@@ -1,262 +1,480 @@
-// ПАРОЛЬ ДЛЯ РЕДАКТИРОВАНИЯ - ЗАМЕНИТЕ НА СВОЙ!
-const EDIT_PASSWORD = "real2024";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-// Инициализация
-AOS.init({ duration: 1000, once: true });
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --accent: #ff0066;
+    --accent-glow: 0 0 20px rgba(255, 0, 102, 0.5);
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+    --card-bg: rgba(20, 20, 20, 0.8);
+    --border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-// База данных
-let siteSettings = {
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-abstract-light-particles-1175-large.mp4",
-    musicUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    title: "REAL_NEFORMAL.RU",
-    subtitle: "// всё самое важное в одном месте",
-    footerText: "REAL_NEFORMAL.RU - ваше пространство в сети",
-    mainColor: "#ff6b6b",
-    blockOpacity: 0.1,
-    fontSize: 16,
-    socialLinks: [
-        { type: 'telegram', url: 'https://t.me/ваш_аккаунт', title: 'Мой Telegram' },
-        { type: 'tiktok', url: 'https://tiktok.com/@ваш_аккаунт', title: 'Мой TikTok' },
-        { type: 'vk', url: 'https://vk.com/ваш_аккаунт', title: 'Моя страница VK' }
-    ]
-};
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
-// Видео пресеты
-const videoPresets = {
-    abstract: "https://assets.mixkit.co/videos/preview/mixkit-abstract-light-particles-1175-large.mp4",
-    nature: "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
-    city: "https://assets.mixkit.co/videos/preview/mixkit-traffic-on-a-city-street-1129-large.mp4",
-    space: "https://assets.mixkit.co/videos/preview/mixkit-earth-in-space-1045-large.mp4"
-};
+/* Анимированный фон */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
 
-// Проверка пароля редактирования
-function checkEditPassword() {
-    const password = document.getElementById('editPassword').value;
-    const error = document.getElementById('passwordError');
+.gradient-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e, #0a0a0a);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
+
+/* Контейнер */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Хедер */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.logo h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff0066, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 0, 102, 0.5);
+}
+
+.logo span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Сетка карточек */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+/* Карточки */
+.card {
+    background: var(--card-bg);
+    border: var(--border);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--accent-glow);
+    border-color: rgba(255, 0, 102, 0.3);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Профиль карточка */
+.profile-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff0066, #ff00ff);
+    position: relative;
+}
+
+.avatar::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+}
+
+.profile-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+    color: var(--text-secondary);
+}
+
+.card-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item .number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.stat-item .label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Соцсети */
+.socials-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.social-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+    transform: translateX(5px);
+}
+
+.social-item i {
+    font-size: 1.5rem;
+    width: 30px;
+    text-align: center;
+}
+
+.social-item.fa-telegram { color: #0088cc; }
+.social-item.fa-tiktok { color: #ff0050; }
+.social-item.fa-instagram { color: #e4405f; }
+.social-item.fa-vk { color: #4a76a8; }
+.social-item.fa-steam { color: #000000; }
+.social-item.fa-youtube { color: #ff0000; }
+.social-item.fa-discord { color: #5865f2; }
+
+/* Быстрые ссылки */
+.links-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.link-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.link-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.link-item i {
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+/* Статус */
+.status-content {
+    text-align: center;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 15px;
+    background: var(--accent);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0066, #ff00ff);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Медиа */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.media-item {
+    text-align: center;
+    cursor: pointer;
+}
+
+.media-thumb {
+    width: 100%;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.media-item:hover .media-thumb {
+    background: rgba(255, 0, 102, 0.3);
+}
+
+.media-item span {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+/* Панель админа */
+.admin-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.admin-btn {
+    background: var(--accent);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--accent-glow);
+}
+
+.admin-btn:hover {
+    transform: scale(1.1);
+}
+
+.admin-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: var(--card-bg);
+    border: var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    width: 300px;
+    display: none;
+    backdrop-filter: blur(10px);
+}
+
+.admin-menu.show {
+    display: block;
+}
+
+.admin-section {
+    margin-bottom: 1rem;
+}
+
+.admin-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.admin-section input,
+.admin-section select {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: var(--border);
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.admin-section button {
+    background: var(--accent);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
     
-    if (password === EDIT_PASSWORD) {
-        document.getElementById('editProtection').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
-        loadSettingsToForm();
-    } else {
-        error.style.display = 'block';
-        error.textContent = 'Неверный пароль!';
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .logo h1 {
+        font-size: 2rem;
+    }
+    
+    .admin-menu {
+        width: 90vw;
+        right: 5vw;
     }
 }
 
-// Блокировка редактирования
-function lockEditing() {
-    document.getElementById('editProtection').style.display = 'flex';
-    document.getElementById('adminPanel').style.display = 'none';
-    document.getElementById('editPassword').value = '';
-    document.getElementById('passwordError').style.display = 'none';
+/* Глитч эффект */
+.glitch {
+    position: relative;
+    display: inline-block;
 }
 
-// Переключение вкладок
-function openTab(tabName) {
-    document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById(tabName).classList.add('active');
-    event.target.classList.add('active');
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-// Загрузка настроек в форму
-function loadSettingsToForm() {
-    document.getElementById('videoUrl').value = siteSettings.videoUrl;
-    document.getElementById('siteTitle').value = siteSettings.title;
-    document.getElementById('siteDescription').value = siteSettings.subtitle;
-    document.getElementById('footerText').value = siteSettings.footerText;
-    document.getElementById('mainColor').value = siteSettings.mainColor;
-    document.getElementById('blockOpacity').value = siteSettings.blockOpacity;
-    document.getElementById('fontSize').value = siteSettings.fontSize;
-    
-    renderSocialList();
+.glitch::before {
+    animation: glitch-1 0.5s infinite linear alternate-reverse;
+    color: #ff00ff;
 }
 
-// Установка видео пресета
-function setVideoPreset(type) {
-    if (videoPresets[type]) {
-        document.getElementById('videoUrl').value = videoPresets[type];
-        changeVideo();
-    }
+.glitch::after {
+    animation: glitch-2 0.5s infinite linear alternate-reverse;
+    color: #00ffff;
 }
 
-// Смена видео
-function changeVideo() {
-    const url = document.getElementById('videoUrl').value;
-    if (url) {
-        document.getElementById('bgVideo').src = url;
-        siteSettings.videoUrl = url;
-        saveSettings();
-    }
+@keyframes glitch-1 {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 2px) }
+    40% { transform: translate(-2px, -2px) }
+    60% { transform: translate(2px, 2px) }
+    80% { transform: translate(2px, -2px) }
+    100% { transform: translate(0) }
 }
 
-// Обновление текстов
-function updateTexts() {
-    siteSettings.title = document.getElementById('siteTitle').value;
-    siteSettings.subtitle = document.getElementById('siteDescription').value;
-    siteSettings.footerText = document.getElementById('footerText').value;
-    
-    applySettings();
-    saveSettings();
+@keyframes glitch-2 {
+    0% { transform: translate(0) }
+    20% { transform: translate(2px, -2px) }
+    40% { transform: translate(2px, 2px) }
+    60% { transform: translate(-2px, -2px) }
+    80% { transform: translate(-2px, 2px) }
+    100% { transform: translate(0) }
 }
-
-// Обновление стилей
-function updateStyles() {
-    siteSettings.mainColor = document.getElementById('mainColor').value;
-    siteSettings.blockOpacity = document.getElementById('blockOpacity').value;
-    siteSettings.fontSize = document.getElementById('fontSize').value;
-    
-    applySettings();
-    saveSettings();
-}
-
-// Применение настроек к сайту
-function applySettings() {
-    document.getElementById('mainTitle').textContent = siteSettings.title;
-    document.getElementById('mainSubtitle').textContent = siteSettings.subtitle;
-    document.getElementById('footerText').textContent = siteSettings.footerText;
-    
-    // Применение стилей
-    document.documentElement.style.setProperty('--main-color', siteSettings.mainColor);
-    document.documentElement.style.setProperty('--block-opacity', siteSettings.blockOpacity);
-    document.documentElement.style.setProperty('--font-size', siteSettings.fontSize + 'px');
-    
-    // Обновление счетчиков
-    document.getElementById('linksCount').textContent = siteSettings.socialLinks.length;
-    document.getElementById('onlineCount').textContent = Math.floor(Math.random() * 10) + 1;
-    
-    renderSocialGrid();
-}
-
-// Рендер списка соцсетей в админке
-function renderSocialList() {
-    const list = document.getElementById('socialList');
-    list.innerHTML = '';
-    
-    siteSettings.socialLinks.forEach((link, index) => {
-        const item = document.createElement('div');
-        item.className = 'social-item';
-        item.innerHTML = `
-            <div>
-                <strong>${link.title}</strong><br>
-                <small>${link.url}</small>
-            </div>
-            <button onclick="removeSocialLink(${index})"><i class="fas fa-trash"></i></button>
-        `;
-        list.appendChild(item);
-    });
-}
-
-// Рендер соцсетей на сайте
-function renderSocialGrid() {
-    const grid = document.getElementById('socialGrid');
-    grid.innerHTML = '';
-    
-    siteSettings.socialLinks.forEach(link => {
-        const card = document.createElement('div');
-        card.className = 'social-card';
-        card.onclick = () => window.open(link.url, '_blank');
-        
-        card.innerHTML = `
-            <i class="fab fa-${link.type} fa-3x"></i>
-            <h3>${link.title}</h3>
-            <p>Нажмите для перехода</p>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-// Добавление соцсети
-function addSocialLink() {
-    const type = prompt('Тип (telegram, vk, tiktok, steam, etc):');
-    const url = prompt('Полная ссылка:');
-    const title = prompt('Название для отображения:');
-    
-    if (type && url && title) {
-        siteSettings.socialLinks.push({ type, url, title });
-        renderSocialList();
-        renderSocialGrid();
-        saveSettings();
-    }
-}
-
-// Удаление соцсети
-function removeSocialLink(index) {
-    if (confirm('Удалить эту ссылку?')) {
-        siteSettings.socialLinks.splice(index, 1);
-        renderSocialList();
-        renderSocialGrid();
-        saveSettings();
-    }
-}
-
-// Сохранение всех настроек
-function saveAllSettings() {
-    saveSettings();
-    alert('Все настройки сохранены!');
-}
-
-// Сброс настроек
-function resetSettings() {
-    if (confirm('Сбросить все настройки к исходным?')) {
-        localStorage.removeItem('realNeformalSettings');
-        location.reload();
-    }
-}
-
-// Сохранение в LocalStorage
-function saveSettings() {
-    localStorage.setItem('realNeformalSettings', JSON.stringify(siteSettings));
-}
-
-// Загрузка из LocalStorage
-function loadSettings() {
-    const saved = localStorage.getItem('realNeformalSettings');
-    if (saved) {
-        siteSettings = JSON.parse(saved);
-    }
-    applySettings();
-}
-
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    loadSettings();
-    
-    // Инициализация аудио
-    const musicToggle = document.getElementById('musicToggle');
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    let isPlaying = false;
-    
-    musicToggle.addEventListener('click', () => {
-        if (isPlaying) {
-            backgroundMusic.pause();
-            musicToggle.innerHTML = '<i class="fas fa-play"></i>';
-        } else {
-            backgroundMusic.play();
-            musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-        }
-        isPlaying = !isPlaying;
-    });
-    
-    document.getElementById('volumeSlider').addEventListener('input', (e) => {
-        backgroundMusic.volume = e.target.value;
-    });
-    
-    // Навигация
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            
-            link.classList.add('active');
-            const target = link.getAttribute('href').substring(1);
-            document.getElementById(target).classList.add('active');
-        });
-    });
-    
-    // Обновление даты
-    document.getElementById('updateDate').textContent = new Date().toLocaleDateString('ru-RU');
-});
