@@ -3,104 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REAL_NEFORMAL</title>
+    <title>REAL_NEFORMAL - Все ссылки</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Анимированный фон -->
-    <div class="bg-animation">
+    <div class="background-animation">
         <div class="gradient-bg"></div>
+        <div class="particles"></div>
     </div>
 
-    <!-- Панель управления -->
-    <div class="admin-panel">
-        <button class="admin-btn" onclick="toggleAdmin()">
-            <i class="fas fa-cog"></i>
-        </button>
-        <div class="admin-menu" id="adminMenu">
-            <h4>REAL_NEFORMAL Control</h4>
-            <div class="admin-section">
-                <label>Video Background URL:</label>
-                <input type="text" id="videoUrl" placeholder="https://example.com/video.mp4">
-                <button onclick="changeBackground()">Apply</button>
+    <!-- Панель редактирования -->
+    <div class="edit-panel" id="editPanel">
+        <div class="panel-header">
+            <h3><i class="fas fa-cog"></i> Панель управления</h3>
+            <button class="close-btn" onclick="toggleEditPanel()">×</button>
+        </div>
+        
+        <div class="panel-tabs">
+            <button class="tab-btn active" onclick="openTab('linksTab')">Ссылки</button>
+            <button class="tab-btn" onclick="openTab('profileTab')">Профиль</button>
+            <button class="tab-btn" onclick="openTab('designTab')">Дизайн</button>
+        </div>
+
+        <div class="tab-content">
+            <div id="linksTab" class="tab-pane active">
+                <div class="form-group">
+                    <h4>Добавить соцсеть</h4>
+                    <select id="socialType">
+                        <option value="telegram">Telegram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="steam">Steam</option>
+                        <option value="vk">VK</option>
+                        <option value="yandex-music">Яндекс.Музыка</option>
+                        <option value="discord">Discord</option>
+                    </select>
+                    <input type="text" id="socialUrl" placeholder="Ссылка на профиль">
+                    <input type="text" id="socialName" placeholder="Название (например: Мой ТГ)">
+                    <button class="add-btn" onclick="addSocialLink()">Добавить</button>
+                </div>
+
+                <div class="links-list">
+                    <h4>Мои ссылки</h4>
+                    <div id="currentLinks"></div>
+                </div>
             </div>
-            <div class="admin-section">
-                <label>Add Social Link:</label>
-                <select id="socialType">
-                    <option value="telegram">Telegram</option>
-                    <option value="tiktok">TikTok</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="vk">VK</option>
-                    <option value="steam">Steam</option>
-                    <option value="youtube">YouTube</option>
-                    <option value="discord">Discord</option>
-                </select>
-                <input type="text" id="socialUrl" placeholder="Profile URL">
-                <input type="text" id="socialName" placeholder="Display Name">
-                <button onclick="addSocial()">Add</button>
+
+            <div id="profileTab" class="tab-pane">
+                <div class="form-group">
+                    <h4>Настройки профиля</h4>
+                    <input type="text" id="profileName" placeholder="Имя профиля">
+                    <input type="text" id="profileDesc" placeholder="Описание">
+                    <input type="number" id="followersCount" placeholder="Количество подписчиков">
+                    <button onclick="updateProfile()">Обновить</button>
+                </div>
+            </div>
+
+            <div id="designTab" class="tab-pane">
+                <div class="form-group">
+                    <h4>Цветовая схема</h4>
+                    <label>Основной цвет:</label>
+                    <input type="color" id="mainColor" value="#ff0066">
+                    <label>Фон:</label>
+                    <input type="color" id="bgColor" value="#0a0a0a">
+                    <button onclick="updateDesign()">Применить</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Главный контент -->
+    <!-- Основной контент -->
     <div class="container">
-        <!-- Хедер -->
+        <!-- Шапка -->
         <header class="header">
-            <div class="logo">
-                <h1 class="glitch" data-text="REAL_NEFORMAL">REAL_NEFORMAL</h1>
-                <span>// underground network</span>
+            <button class="edit-toggle" onclick="toggleEditPanel()">
+                <i class="fas fa-edit"></i>
+            </button>
+            
+            <div class="header-content">
+                <h1 class="site-title">REAL_NEFORMAL</h1>
+                <p class="site-subtitle">Все мои социальные сети в одном месте</p>
             </div>
+
             <div class="stats">
-                <div class="stat">
+                <div class="stat-item">
                     <span class="stat-number" id="onlineCount">47</span>
-                    <span class="stat-label">online</span>
+                    <span class="stat-label">онлайн</span>
                 </div>
             </div>
         </header>
 
         <!-- Основная сетка -->
-        <main class="grid-container">
-            <!-- Профиль -->
+        <main class="main-grid">
+            <!-- Карточка профиля -->
             <div class="card profile-card">
                 <div class="card-header">
-                    <div class="avatar"></div>
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                     <div class="profile-info">
-                        <h3>ANONYM0US</h3>
-                        <p>Digital Creator</p>
+                        <h3 id="profileNameDisplay">Аноним</h3>
+                        <p id="profileDescDisplay">Создатель контента</p>
                     </div>
                 </div>
-                <div class="card-stats">
-                    <div class="stat-item">
-                        <span class="number">1.2K</span>
-                        <span class="label">followers</span>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="number" id="followersDisplay">1.2K</span>
+                        <span class="label">подписчиков</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat">
                         <span class="number">247</span>
-                        <span class="label">posts</span>
+                        <span class="label">публикаций</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Соцсети -->
+            <!-- Социальные сети -->
             <div class="card socials-card">
-                <h3 class="card-title"><i class="fas fa-link"></i> SOCIAL LINKS</h3>
+                <div class="card-title">
+                    <i class="fas fa-share-alt"></i>
+                    <h3>Социальные сети</h3>
+                </div>
                 <div class="socials-grid" id="socialsGrid">
-                    <!-- Соцсети будут здесь -->
+                    <!-- Ссылки будут здесь -->
                 </div>
             </div>
 
             <!-- Быстрые ссылки -->
             <div class="card links-card">
-                <h3 class="card-title"><i class="fas fa-rocket"></i> QUICK ACCESS</h3>
-                <div class="links-grid">
-                    <div class="link-item" onclick="openLink('https://t.me/')">
+                <div class="card-title">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Быстрый доступ</h3>
+                </div>
+                <div class="quick-links">
+                    <div class="link-item" onclick="openLink('https://telegram.org/')">
                         <i class="fab fa-telegram"></i>
-                        <span>Telegram Channel</span>
+                        <span>Мой канал</span>
                     </div>
                     <div class="link-item" onclick="openLink('https://discord.gg/')">
                         <i class="fab fa-discord"></i>
-                        <span>Discord Server</span>
+                        <span>Discord сервер</span>
                     </div>
                     <div class="link-item" onclick="openLink('https://youtube.com/')">
                         <i class="fab fa-youtube"></i>
@@ -109,38 +152,28 @@
                 </div>
             </div>
 
-            <!-- Статус -->
-            <div class="card status-card">
-                <h3 class="card-title"><i class="fas fa-heart"></i> STATUS</h3>
-                <div class="status-content">
-                    <div class="status online">ONLINE</div>
-                    <p>Creating content • Gaming • Streaming</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 78%"></div>
-                    </div>
-                    <span class="progress-text">Daily activity: 78%</span>
+            <!-- Статистика -->
+            <div class="card stats-card">
+                <div class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Статистика</h3>
                 </div>
-            </div>
-
-            <!-- Медиа -->
-            <div class="card media-card">
-                <h3 class="card-title"><i class="fas fa-play"></i> LATEST MEDIA</h3>
-                <div class="media-grid">
-                    <div class="media-item">
-                        <div class="media-thumb"></div>
-                        <span>New Video</span>
-                    </div>
-                    <div class="media-item">
-                        <div class="media-thumb"></div>
-                        <span>Gameplay</span>
-                    </div>
-                    <div class="media-item">
-                        <div class="media-thumb"></div>
-                        <span>Photo Set</span>
+                <div class="stats-content">
+                    <div class="status-badge online">ОНЛАЙН</div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                        <span>Активность: 78%</span>
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- Футер -->
+        <footer class="footer">
+            <p>REAL_NEFORMAL &copy; 2024</p>
+        </footer>
     </div>
 
     <script src="./script.js"></script>
