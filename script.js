@@ -7,16 +7,16 @@
 :root {
     --bg-primary: #0a0a0a;
     --bg-secondary: #111111;
-    --accent: #ff0066;
+    --accent-color: #ff0066;
     --accent-glow: 0 0 20px rgba(255, 0, 102, 0.5);
     --text-primary: #ffffff;
     --text-secondary: #888888;
     --card-bg: rgba(20, 20, 20, 0.8);
-    --border: 1px solid rgba(255, 255, 255, 0.1);
+    --card-border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -24,7 +24,7 @@ body {
 }
 
 /* Анимированный фон */
-.bg-animation {
+.background-animation {
     position: fixed;
     top: 0;
     left: 0;
@@ -47,14 +47,35 @@ body {
     100% { background-position: 0% 50% }
 }
 
-/* Контейнер */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+.particles::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 102, 0.1) 2px, transparent 0),
+        radial-gradient(circle at 80% 70%, rgba(0, 255, 255, 0.1) 2px, transparent 0);
+    background-size: 50px 50px;
+    animation: particlesMove 20s linear infinite;
 }
 
-/* Хедер */
+@keyframes particlesMove {
+    from { transform: translateY(0px) }
+    to { transform: translateY(-50px) }
+}
+
+/* Контейнер */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Шапка */
 .header {
     display: flex;
     justify-content: space-between;
@@ -63,19 +84,40 @@ body {
     margin-bottom: 2rem;
 }
 
-.logo h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(45deg, #ff0066, #ff00ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(255, 0, 102, 0.5);
+.edit-toggle {
+    background: var(--accent-color);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--accent-glow);
 }
 
-.logo span {
+.edit-toggle:hover {
+    transform: scale(1.1);
+}
+
+.header-content {
+    text-align: center;
+}
+
+.site-title {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--accent-color), #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--accent-glow);
+    margin-bottom: 0.5rem;
+}
+
+.site-subtitle {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
+    font-size: 1.1rem;
 }
 
 .stats {
@@ -83,7 +125,7 @@ body {
     gap: 2rem;
 }
 
-.stat {
+.stat-item {
     text-align: center;
 }
 
@@ -91,31 +133,30 @@ body {
     display: block;
     font-size: 2rem;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--accent-color);
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 /* Сетка карточек */
-.grid-container {
+.main-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    margin-top: 2rem;
+    gap: 25px;
+    margin-bottom: 3rem;
 }
 
 /* Карточки */
 .card {
     background: var(--card-bg);
-    border: var(--border);
+    backdrop-filter: blur(10px);
+    border: var(--card-border);
     border-radius: 15px;
     padding: 1.5rem;
-    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -128,8 +169,8 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.6s;
 }
 
 .card:hover::before {
@@ -142,16 +183,7 @@ body {
     border-color: rgba(255, 0, 102, 0.3);
 }
 
-.card-title {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Профиль карточка */
+/* Карточка профиля */
 .profile-card .card-header {
     display: flex;
     align-items: center;
@@ -160,22 +192,14 @@ body {
 }
 
 .avatar {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    background: linear-gradient(45deg, #ff0066, #ff00ff);
-    position: relative;
-}
-
-.avatar::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    background: var(--bg-secondary);
-    border-radius: 50%;
+    background: linear-gradient(45deg, var(--accent-color), #ff00ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
 }
 
 .profile-info h3 {
@@ -187,31 +211,48 @@ body {
     color: var(--text-secondary);
 }
 
-.card-stats {
+.profile-stats {
     display: flex;
     gap: 2rem;
 }
 
-.stat-item {
+.profile-stats .stat {
     text-align: center;
 }
 
-.stat-item .number {
+.profile-stats .number {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--accent-color);
 }
 
-.stat-item .label {
-    font-size: 0.8rem;
+.profile-stats .label {
+    font-size: 0.9rem;
     color: var(--text-secondary);
 }
 
-/* Соцсети */
+/* Заголовки карточек */
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.card-title i {
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+.card-title h3 {
+    font-size: 1.3rem;
+}
+
+/* Социальные сети */
 .socials-grid {
     display: grid;
-    gap: 10px;
+    gap: 12px;
 }
 
 .social-item {
@@ -228,7 +269,7 @@ body {
 
 .social-item:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent);
+    border-color: var(--accent-color);
     transform: translateX(5px);
 }
 
@@ -238,18 +279,17 @@ body {
     text-align: center;
 }
 
-.social-item.fa-telegram { color: #0088cc; }
-.social-item.fa-tiktok { color: #ff0050; }
-.social-item.fa-instagram { color: #e4405f; }
-.social-item.fa-vk { color: #4a76a8; }
-.social-item.fa-steam { color: #000000; }
-.social-item.fa-youtube { color: #ff0000; }
-.social-item.fa-discord { color: #5865f2; }
+.social-item .fa-telegram { color: #0088cc; }
+.social-item .fa-tiktok { color: #ff0050; }
+.social-item .fa-steam { color: #000000; }
+.social-item .fa-vk { color: #4a76a8; }
+.social-item .fa-yandex { color: #ff0000; }
+.social-item .fa-discord { color: #5865f2; }
 
 /* Быстрые ссылки */
-.links-grid {
+.quick-links {
     display: grid;
-    gap: 10px;
+    gap: 12px;
 }
 
 .link-item {
@@ -270,22 +310,22 @@ body {
 
 .link-item i {
     font-size: 1.5rem;
-    color: var(--accent);
+    color: var(--accent-color);
 }
 
-/* Статус */
-.status-content {
-    text-align: center;
-}
-
-.status {
+/* Статистика */
+.status-badge {
     display: inline-block;
-    padding: 5px 15px;
-    background: var(--accent);
+    padding: 8px 16px;
+    background: var(--accent-color);
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
     margin-bottom: 1rem;
+}
+
+.progress-container {
+    margin-top: 1rem;
 }
 
 .progress-bar {
@@ -293,129 +333,136 @@ body {
     height: 6px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
-    margin: 1rem 0;
+    margin-bottom: 0.5rem;
     overflow: hidden;
 }
 
-.progress {
+.progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ff0066, #ff00ff);
+    background: linear-gradient(90deg, var(--accent-color), #ff00ff);
     border-radius: 3px;
     transition: width 0.3s ease;
 }
 
-.progress-text {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-/* Медиа */
-.media-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.media-item {
-    text-align: center;
-    cursor: pointer;
-}
-
-.media-thumb {
-    width: 100%;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
-}
-
-.media-item:hover .media-thumb {
-    background: rgba(255, 0, 102, 0.3);
-}
-
-.media-item span {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-}
-
-/* Панель админа */
-.admin-panel {
+/* Панель редактирования */
+.edit-panel {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 0;
+    right: -400px;
+    width: 380px;
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-left: var(--card-border);
     z-index: 1000;
+    transition: right 0.3s ease;
+    overflow-y: auto;
 }
 
-.admin-btn {
-    background: var(--accent);
+.edit-panel.active {
+    right: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: var(--card-border);
+}
+
+.close-btn {
+    background: none;
     border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.panel-tabs {
+    display: flex;
+    border-bottom: var(--card-border);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 1rem;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--accent-glow);
 }
 
-.admin-btn:hover {
-    transform: scale(1.1);
+.tab-btn.active {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
 }
 
-.admin-menu {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background: var(--card-bg);
-    border: var(--border);
-    border-radius: 10px;
-    padding: 1rem;
-    width: 300px;
+.tab-content {
+    padding: 1.5rem;
+}
+
+.tab-pane {
     display: none;
-    backdrop-filter: blur(10px);
 }
 
-.admin-menu.show {
+.tab-pane.active {
     display: block;
 }
 
-.admin-section {
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group h4 {
     margin-bottom: 1rem;
+    color: var(--accent-color);
 }
 
-.admin-section label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.admin-section input,
-.admin-section select {
+.form-group input,
+.form-group select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
     background: rgba(255, 255, 255, 0.1);
-    border: var(--border);
-    border-radius: 5px;
-    color: white;
-    margin-bottom: 0.5rem;
+    border: var(--card-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
 }
 
-.admin-section button {
-    background: var(--accent);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
+.add-btn {
     width: 100%;
+    background: var(--accent-color);
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+    background: #e5005c;
+}
+
+.links-list h4 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+/* Футер */
+.footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--text-secondary);
+    border-top: var(--card-border);
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .grid-container {
+    .main-grid {
         grid-template-columns: 1fr;
     }
     
@@ -425,56 +472,12 @@ body {
         text-align: center;
     }
     
-    .logo h1 {
-        font-size: 2rem;
+    .site-title {
+        font-size: 2.5rem;
     }
     
-    .admin-menu {
-        width: 90vw;
-        right: 5vw;
+    .edit-panel {
+        width: 100vw;
+        right: -100vw;
     }
-}
-
-/* Глитч эффект */
-.glitch {
-    position: relative;
-    display: inline-block;
-}
-
-.glitch::before,
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.glitch::before {
-    animation: glitch-1 0.5s infinite linear alternate-reverse;
-    color: #ff00ff;
-}
-
-.glitch::after {
-    animation: glitch-2 0.5s infinite linear alternate-reverse;
-    color: #00ffff;
-}
-
-@keyframes glitch-1 {
-    0% { transform: translate(0) }
-    20% { transform: translate(-2px, 2px) }
-    40% { transform: translate(-2px, -2px) }
-    60% { transform: translate(2px, 2px) }
-    80% { transform: translate(2px, -2px) }
-    100% { transform: translate(0) }
-}
-
-@keyframes glitch-2 {
-    0% { transform: translate(0) }
-    20% { transform: translate(2px, -2px) }
-    40% { transform: translate(2px, 2px) }
-    60% { transform: translate(-2px, -2px) }
-    80% { transform: translate(-2px, 2px) }
-    100% { transform: translate(0) }
 }
