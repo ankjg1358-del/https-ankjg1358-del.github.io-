@@ -1,170 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REAL_NEFORMAL</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>REAL_NEFORMAL</title>
+<link rel="preload" href="style.css" as="style">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Анимированный фон -->
-    <div class="animated-bg">
-        <div class="gradient-wave"></div>
-        <div class="floating-particles"></div>
-    </div>
+  <!-- VIDEO BACKGROUND -->
+  <div id="bg">
+    <video id="bgVideo" autoplay muted loop playsinline crossorigin="anonymous">
+      <source src="assets/bg.mp4" type="video/mp4">
+      <!-- если нет видео, то покажется градиент -->
+    </video>
+    <div class="bg-gradient"></div>
+  </div>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <!-- Иконка креста -->
-        <div class="cross-icon">
-            <i class="fas fa-plus"></i>
+  <main class="wrap">
+    <header class="header">
+      <div class="brand">
+        <div class="logo" id="logo">RN</div>
+        <div>
+          <h1 id="siteTitle">REAL_NEFORMAL</h1>
+          <p id="siteSubtitle">Социальные сети и медиа</p>
         </div>
+      </div>
+      <div class="header-actions">
+        <a href="edit.html" class="btn edit-link" title="Редактировать (только для владельца)">Редактировать</a>
+      </div>
+    </header>
 
-        <!-- Шапка -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="site-title">REAL_NEFORMAL</h1>
-                <p class="site-subtitle">Все мои ссылки в одном месте</p>
-                
-                <!-- Мой профиль -->
-                <div class="my-profile" onclick="openLink('https://t.me/REAL_NEFORMAL')">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="profile-info">
-                        <span class="profile-name">REAL_NEFORMAL</span>
-                        <span class="profile-handle">@REAL_NEFORMAL</span>
-                    </div>
-                    <i class="fas fa-external-link-alt"></i>
-                </div>
-            </div>
-        </header>
+    <section class="hero">
+      <div class="star-wrap">
+        <!-- SVG: центральная звезда + геометрия -->
+        <svg id="starSVG" viewBox="-200 -200 400 400" preserveAspectRatio="xMidYMid meet" aria-hidden>
+          <g id="shapes" transform="rotate(0)">
+            <g class="geom g1"><polygon points="0,-90 22,-28 90,-28 36,12 58,84 0,40 -58,84 -36,12 -90,-28 -22,-28" /></g>
+            <g class="geom g2"><rect x="-120" y="-10" width="40" height="40" rx="6" ry="6" /></g>
+            <g class="geom g3"><circle cx="90" cy="80" r="16" /></g>
+            <!-- центровая звезда -->
+            <g id="star" transform="scale(0.9)">
+              <path id="starPath" d="M0-40 L11-12 L40-12 L16 4 L25 36 0 18 -25 36 -16 4 -40-12 -11-12 Z"/>
+            </g>
+          </g>
+        </svg>
+      </div>
 
-        <!-- Навигация -->
-        <nav class="navigation">
-            <button class="nav-btn active" onclick="showSection('steam')">
-                <i class="fab fa-steam"></i>
-                <span>Steam</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('tiktok')">
-                <i class="fab fa-tiktok"></i>
-                <span>TikTok</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('email')">
-                <i class="fas fa-envelope"></i>
-                <span>Почта</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('about')">
-                <i class="fas fa-user"></i>
-                <span>О себе</span>
-            </button>
-        </nav>
+      <div class="hero-info">
+        <h2 id="lead">Здесь собраны все мои профили и медиа</h2>
+        <div class="profile-card">
+          <div class="avatar-wrap"><img id="avatar" src="" alt="Аватар"></div>
+          <div class="meta">
+            <div class="name" id="username">REAL_NEFORMAL</div>
+            <div class="status" id="status">В сети</div>
+            <div class="stats">
+              <div><span id="followers">0</span><small>подписчиков</small></div>
+              <div><span id="onlineCount">0</span><small>онлайн</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <!-- Секция Steam -->
-        <section class="content-section active" id="steamSection">
-            <div class="section-header">
-                <h2><i class="fab fa-steam"></i> Steam Профиль</h2>
-                <p>Мой игровой профиль в Steam</p>
-            </div>
-            
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar steam-avatar">
-                        <i class="fab fa-steam"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>Toshec4ka</h3>
-                        <p>Steam ID: Toshec4ka</p>
-                    </div>
-                </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn primary" onclick="openLink('https://steamcommunity.com/id/Toshec4ka/')">
-                        <i class="fas fa-external-link-alt"></i> Открыть профиль
-                    </button>
-                </div>
-            </div>
-        </section>
+    <section class="socials-section">
+      <h3>Социальные сети</h3>
+      <div class="grid" id="socialGrid"></div>
+    </section>
 
-        <!-- Секция TikTok -->
-        <section class="content-section" id="tiktokSection">
-            <div class="section-header">
-                <h2><i class="fab fa-tiktok"></i> TikTok</h2>
-                <p>Мой TikTok аккаунт</p>
-            </div>
-            
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar tiktok-avatar">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>toshec4ka</h3>
-                        <p>@toshec4ka</p>
-                    </div>
-                </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn primary" onclick="openLink('https://www.tiktok.com/@toshec4ka')">
-                        <i class="fas fa-external-link-alt"></i> Открыть TikTok
-                    </button>
-                </div>
-            </div>
-        </section>
+    <section class="media-section">
+      <h3>Медиа</h3>
+      <div class="grid" id="mediaGrid"></div>
+    </section>
 
-        <!-- Секция Почта -->
-        <section class="content-section" id="emailSection">
-            <div class="section-header">
-                <h2><i class="fas fa-envelope"></i> Моя почта</h2>
-                <p>Свяжитесь со мной по email</p>
-            </div>
-            
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar email-avatar">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>Anton4iko2@yandex.ru</h3>
-                        <p>Основная почта</p>
-                    </div>
-                </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn primary" onclick="openLink('mailto:Anton4iko2@yandex.ru')">
-                        <i class="fas fa-paper-plane"></i> Написать письмо
-                    </button>
-                    <button class="profile-btn secondary" onclick="copyEmail()">
-                        <i class="fas fa-copy"></i> Скопировать email
-                    </button>
-                </div>
-            </div>
-        </section>
+    <section class="plugins-section" id="pluginsSection" hidden>
+      <h3>Плагины</h3>
+      <div id="pluginsList" class="grid"></div>
+    </section>
 
-        <!-- Секция О себе -->
-        <section class="content-section" id="aboutSection">
-            <div class="section-header">
-                <h2><i class="fas fa-user"></i> О себе</h2>
-                <p>Немного информации обо мне</p>
-            </div>
-            
-            <div class="about-card">
-                <div class="about-content">
-                    <p>Здесь будет информация обо мне...</p>
-                    <p>Ты можешь написать любой текст о себе, своих увлечениях, интересах или чем занимаешься.</p>
-                    <p>Просто отредактируй этот текст в файле index.html</p>
-                </div>
-            </div>
-        </section>
+    <footer class="footer">
+      <div id="copyright"></div>
+    </footer>
+  </main>
 
-        <!-- Футер -->
-        <footer class="footer">
-            <p>REAL_NEFORMAL</p>
-            <p class="footer-text">Данный сайт является моим био и здесь собрана информация про меня. Так что смотрите и изучайте :)</p>
-        </footer>
-    </div>
-
-    <script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
