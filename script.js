@@ -1,6 +1,6 @@
 // Функция открытия ссылок
 function openLink(url) {
-    if (url && url.startsWith('http') || url.startsWith('mailto') || url.startsWith('steam')) {
+    if (url) {
         window.open(url, '_blank');
     }
 }
@@ -24,45 +24,55 @@ function showSection(sectionName) {
     document.getElementById(sectionName + 'Section').classList.add('active');
 }
 
-// Анимации
-function startAnimations() {
-    // Случайное свечение заголовка
-    setInterval(() => {
-        const glow = document.querySelector('.site-title');
-        glow.style.textShadow = `0 0 ${20 + Math.random() * 10}px rgba(255, 0, 102, ${0.3 + Math.random() * 0.3})`;
-    }, 2000);
-    
-    // Анимация карточек при загрузке
-    setTimeout(() => {
-        const cards = document.querySelectorAll('.social-item, .friend-item, .profile-card');
-        cards.forEach((card, index) => {
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-    }, 500);
+// Копирование email
+function copyEmail() {
+    const email = 'Anton4iko2@yandex.ru';
+    navigator.clipboard.writeText(email).then(() => {
+        alert('Email скопирован: ' + email);
+    });
 }
+
+// Управление звуком
+const audio = document.getElementById('bgAudio');
+const muteBtn = document.getElementById('muteBtn');
+
+if (muteBtn) {
+    muteBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+            audio.pause();
+            muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+    });
+}
+
+// Автозапуск музыки с задержкой
+setTimeout(() => {
+    if (audio) {
+        audio.volume = 0.3;
+        audio.play().catch(e => console.log('Автозапуск музыки заблокирован браузером'));
+    }
+}, 1000);
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
-    startAnimations();
-    
     // Плавное появление контента
-    const elements = document.querySelectorAll('.social-item, .friend-item, .profile-card');
-    elements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'all 0.5s ease';
-    });
+    setTimeout(() => {
+        const elements = document.querySelectorAll('.profile-card, .friend-item');
+        elements.forEach((el, index) => {
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 500);
 });
 
-// Параллакс эффект для фона
+// Параллакс эффект
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const video = document.querySelector('.video-background');
-    const particles = document.querySelector('.floating-particles');
-    
-    if (video) video.style.transform = `translateY(${scrolled * 0.4}px)`;
-    if (particles) particles.style.transform = `translateY(${scrolled * 0.2}px)`;
+    if (video) video.style.transform = `translateY(${scrolled * 0.3}px)`;
 });
