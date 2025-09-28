@@ -1,5 +1,5 @@
 // ПАРОЛЬ ДЛЯ РЕДАКТИРОВАНИЯ
-const EDIT_PASSWORD = "19259";
+const EDIT_PASSWORD = "Toha2008)))";
 
 // База данных социальных сетей
 const socialNetworks = {
