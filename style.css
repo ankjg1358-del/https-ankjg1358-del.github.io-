@@ -1,42 +1,44 @@
-/* Анимация фона */
-.star-animation {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* ... (все предыдущие стили остаются без изменений) ... */
+
+/* Секция О себе */
+.about-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border: var(--card-border);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 600px;
+    animation: slideUp 0.5s ease;
 }
 
-.big-star {
-    width: 200px;
-    height: 200px;
-    background: url('star.png') no-repeat center;
-    background-size: contain;
-    animation: spinStar 10s linear infinite;
+.about-content {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: var(--text-primary);
 }
 
-@keyframes spinStar {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.about-content p {
+    margin-bottom: 1rem;
 }
 
-.small-shapes {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    position: absolute;
-    animation: moveShapes 5s ease-in-out infinite;
+.about-content p:last-child {
+    margin-bottom: 0;
 }
 
-.shape1 {
-    top: -100px;
-    left: -50px;
-    animation-delay: 0s;
+/* Убираем лишние отступы в карточках профиля */
+.profile-header .profile-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
 }
 
-.shape2 {
-    top: 100px;
+.profile-header .profile-info p {
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+/* Убираем статистику */
+.profile-stats {
+    display: none;
+}
