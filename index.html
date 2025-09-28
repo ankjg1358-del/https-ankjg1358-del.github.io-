@@ -22,22 +22,163 @@
         <div class="video-overlay"></div>
     </div>
 
+    <!-- Защита паролем -->
+    <div id="passwordProtection" class="password-protection">
+        <div class="password-container">
+            <div class="password-logo">
+                <div class="logo-icon">⚡</div>
+                <h2>REAL_NEFORMAL</h2>
+            </div>
+            <p>Введите пароль для доступа к редактированию</p>
+            <input type="password" id="passwordInput" placeholder="•••••" maxlength="5">
+            <button onclick="checkPassword()"><i class="fas fa-lock-open"></i> Разблокировать</button>
+            <p id="passwordError" class="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Панель редактирования -->
+    <div class="edit-panel" id="editPanel" style="display: none;">
+        <div class="panel-header">
+            <h3><i class="fas fa-magic"></i> Редактор REAL_NEFORMAL</h3>
+            <button class="close-btn" onclick="toggleEditPanel()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="panel-tabs">
+            <button class="tab-btn active" onclick="openTab('contentTab')"><i class="fas fa-edit"></i> Тексты</button>
+            <button class="tab-btn" onclick="openTab('socialTab')"><i class="fas fa-share-alt"></i> Соцсети</button>
+            <button class="tab-btn" onclick="openTab('designTab')"><i class="fas fa-palette"></i> Дизайн</button>
+            <button class="tab-btn" onclick="openTab('mediaTab')"><i class="fas fa-video"></i> Медиа</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Вкладка Тексты -->
+            <div id="contentTab" class="tab-pane active">
+                <div class="form-group">
+                    <h4><i class="fas fa-heading"></i> Заголовки</h4>
+                    <input type="text" id="siteTitle" placeholder="Название сайта" value="REAL_NEFORMAL">
+                    <input type="text" id="siteSubtitle" placeholder="Подзаголовок" value="Все мои ссылки в одном месте">
+                </div>
+
+                <div class="form-group">
+                    <h4><i class="fas fa-user"></i> Мой профиль</h4>
+                    <input type="text" id="profileName" placeholder="Имя" value="REAL_NEFORMAL">
+                    <input type="text" id="profileStatus" placeholder="Статус" value="Создатель контента">
+                </div>
+
+                <div class="form-group">
+                    <h4><i class="fas fa-text-height"></i> Описания</h4>
+                    <textarea id="linksDescription" placeholder="Описание раздела ссылок">Мои социальные сети и важные ссылки</textarea>
+                    <textarea id="friendsDescription" placeholder="Описание раздела друзей">Мои близкие друзья и проверенные люди</textarea>
+                </div>
+
+                <div class="form-group">
+                    <h4><i class="fas fa-footer"></i> Футер</h4>
+                    <textarea id="footerText" placeholder="Текст в футере">Данный сайт является моим био и здесь собрана информация про меня. Так что смотрите и изучайте :)</textarea>
+                </div>
+
+                <button class="save-btn" onclick="updateTexts()"><i class="fas fa-save"></i> Сохранить тексты</button>
+            </div>
+
+            <!-- Вкладка Соцсети -->
+            <div id="socialTab" class="tab-pane">
+                <div class="form-group">
+                    <h4><i class="fas fa-plus-circle"></i> Добавить ссылку</h4>
+                    <select id="socialType">
+                        <option value="telegram">Telegram</option>
+                        <option value="steam">Steam</option>
+                        <option value="discord">Discord</option>
+                        <option value="email">Email</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="vk">VK</option>
+                        <option value="other">Другое</option>
+                    </select>
+                    <input type="text" id="socialUrl" placeholder="https://...">
+                    <input type="text" id="socialName" placeholder="Название ссылки">
+                    <button class="add-btn" onclick="addSocialLink()"><i class="fas fa-plus"></i> Добавить</button>
+                </div>
+
+                <div class="links-list">
+                    <h4><i class="fas fa-list"></i> Мои ссылки</h4>
+                    <div id="currentLinks"></div>
+                </div>
+            </div>
+
+            <!-- Вкладка Дизайн -->
+            <div id="designTab" class="tab-pane">
+                <div class="form-group">
+                    <h4><i class="fas fa-fill-drip"></i> Цвета</h4>
+                    <div class="color-grid">
+                        <div class="color-item">
+                            <label>Основной</label>
+                            <input type="color" id="mainColor" value="#ff0066">
+                        </div>
+                        <div class="color-item">
+                            <label>Фон</label>
+                            <input type="color" id="bgColor" value="#0a0a0a">
+                        </div>
+                        <div class="color-item">
+                            <label>Текст</label>
+                            <input type="color" id="textColor" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4><i class="fas fa-wave-square"></i> Эффекты</h4>
+                    <label>Размытие: <span id="blurValue">10</span>px</label>
+                    <input type="range" id="blurEffect" min="0" max="20" value="10">
+                    
+                    <label>Свечение: <span id="glowValue">20</span>px</label>
+                    <input type="range" id="glowEffect" min="0" max="50" value="20">
+                </div>
+
+                <button class="save-btn" onclick="updateDesign()"><i class="fas fa-paint-brush"></i> Применить дизайн</button>
+            </div>
+
+            <!-- Вкладка Медиа -->
+            <div id="mediaTab" class="tab-pane">
+                <div class="form-group">
+                    <h4><i class="fas fa-video"></i> Видео фон</h4>
+                    <input type="text" id="videoUrl" placeholder="URL видео (MP4)" value="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-light-1232-large.mp4">
+                    <div class="video-presets">
+                        <button onclick="setVideoPreset('neon')">Неоновый</button>
+                        <button onclick="setVideoPreset('abstract')">Абстрактный</button>
+                        <button onclick="setVideoPreset('particles')">Частицы</button>
+                    </div>
+                    <button onclick="changeVideo()"><i class="fas fa-sync"></i> Обновить видео</button>
+                </div>
+
+                <div class="form-group">
+                    <h4><i class="fas fa-image"></i> Аватарка Telegram</h4>
+                    <input type="text" id="tgAvatarUrl" placeholder="URL аватарки">
+                    <small>Вставьте прямую ссылку на изображение</small>
+                    <button onclick="updateAvatar()"><i class="fas fa-user-circle"></i> Обновить аватарку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Основной контент -->
     <div class="container">
+        <!-- Иконка креста -->
+        <div class="cross-icon" onclick="toggleEditPanel()">
+            <i class="fas fa-plus"></i>
+        </div>
+
         <!-- Шапка -->
         <header class="header">
             <div class="header-content">
-                <h1 class="site-title">REAL_NEFORMAL</h1>
-                <p class="site-subtitle">Все мои ссылки в одном месте</p>
+                <h1 class="site-title" id="mainTitle">REAL_NEFORMAL</h1>
+                <p class="site-subtitle" id="mainSubtitle">Все мои ссылки в одном месте</p>
                 
                 <!-- Мой профиль -->
                 <div class="my-profile" onclick="openLink('https://t.me/REAL_NEFORMAL')">
-                    <div class="profile-avatar">
+                    <div class="profile-avatar" id="profileAvatar">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="profile-info">
-                        <span class="profile-name">REAL_NEFORMAL</span>
-                        <span class="profile-handle">@REAL_NEFORMAL</span>
+                        <span class="profile-name" id="profileNameDisplay">REAL_NEFORMAL</span>
+                        <span class="profile-handle" id="profileStatusDisplay">Создатель контента</span>
                     </div>
                     <i class="fas fa-external-link-alt"></i>
                 </div>
@@ -46,17 +187,9 @@
 
         <!-- Навигация -->
         <nav class="navigation">
-            <button class="nav-btn active" onclick="showSection('social')">
-                <i class="fas fa-share-alt"></i>
-                <span>Соцсети</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('steam')">
-                <i class="fab fa-steam"></i>
-                <span>Steam</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('vk')">
-                <i class="fab fa-vk"></i>
-                <span>VK</span>
+            <button class="nav-btn active" onclick="showSection('links')">
+                <i class="fas fa-link"></i>
+                <span>Мои ссылки</span>
             </button>
             <button class="nav-btn" onclick="showSection('friends')">
                 <i class="fas fa-users"></i>
@@ -64,154 +197,15 @@
             </button>
         </nav>
 
-        <!-- Секция соцсетей -->
-        <main class="content-section active" id="socialSection">
+        <!-- Секция ссылок -->
+        <main class="content-section active" id="linksSection">
             <div class="section-header">
                 <h2><i class="fas fa-share-alt"></i> Социальные сети</h2>
-                <p>Мои основные социальные сети и мессенджеры</p>
+                <p id="linksDescriptionDisplay">Мои социальные сети и важные ссылки</p>
             </div>
             
-            <div class="socials-grid">
-                <!-- Telegram -->
-                <div class="social-item" onclick="openLink('https://t.me/REAL_NEFORMAL')">
-                    <i class="fab fa-telegram"></i>
-                    <span>Telegram</span>
-                    <span class="social-handle">@REAL_NEFORMAL</span>
-                    <span class="social-arrow">→</span>
-                </div>
-
-                <!-- TikTok -->
-                <div class="social-item" onclick="openLink('https://tiktok.com/@REAL_NEFORMAL')">
-                    <i class="fab fa-tiktok"></i>
-                    <span>TikTok</span>
-                    <span class="social-handle">@REAL_NEFORMAL</span>
-                    <span class="social-arrow">→</span>
-                </div>
-
-                <!-- Discord -->
-                <div class="social-item" onclick="openLink('https://discord.gg/')">
-                    <i class="fab fa-discord"></i>
-                    <span>Discord</span>
-                    <span class="social-handle">REAL_NEFORMAL#0000</span>
-                    <span class="social-arrow">→</span>
-                </div>
-
-                <!-- Email -->
-                <div class="social-item" onclick="openLink('mailto:realneformal@mail.com')">
-                    <i class="fas fa-envelope"></i>
-                    <span>Email</span>
-                    <span class="social-handle">realneformal@mail.com</span>
-                    <span class="social-arrow">→</span>
-                </div>
-            </div>
-        </main>
-
-        <!-- Секция Steam -->
-        <main class="content-section" id="steamSection">
-            <div class="section-header">
-                <h2><i class="fab fa-steam"></i> Steam Профиль</h2>
-                <p>Мой игровой профиль и достижения</p>
-            </div>
-            
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar steam-avatar">
-                        <i class="fab fa-steam"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>Toshec4ka</h3>
-                        <p>Steam ID: Toshec4ka</p>
-                        <div class="profile-stats">
-                            <div class="stat">
-                                <span class="number">127</span>
-                                <span class="label">игр</span>
-                            </div>
-                            <div class="stat">
-                                <span class="number">5.2K</span>
-                                <span class="label">часов</span>
-                            </div>
-                            <div class="stat">
-                                <span class="number">84</span>
-                                <span class="label">друзей</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn primary" onclick="openLink('https://steamcommunity.com/id/Toshec4ka/')">
-                        <i class="fas fa-external-link-alt"></i> Открыть профиль
-                    </button>
-                    <button class="profile-btn secondary" onclick="openLink('steam://friends/add/76561198123456789')">
-                        <i class="fas fa-user-plus"></i> Добавить в друзья
-                    </button>
-                </div>
-
-                <div class="recent-games">
-                    <h4>Недавние игры</h4>
-                    <div class="games-list">
-                        <div class="game-item">
-                            <span class="game-name">Counter-Strike 2</span>
-                            <span class="game-hours">1.2K часов</span>
-                        </div>
-                        <div class="game-item">
-                            <span class="game-name">Dota 2</span>
-                            <span class="game-hours">980 часов</span>
-                        </div>
-                        <div class="game-item">
-                            <span class="game-name">GTA V</span>
-                            <span class="game-hours">450 часов</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Секция VK -->
-        <main class="content-section" id="vkSection">
-            <div class="section-header">
-                <h2><i class="fab fa-vk"></i> VK Страница</h2>
-                <p>Моя страница ВКонтакте</p>
-            </div>
-            
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar vk-avatar">
-                        <i class="fab fa-vk"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>Разрушитель</h3>
-                        <p>@razhrushytel</p>
-                        <div class="profile-stats">
-                            <div class="stat">
-                                <span class="number">1.4K</span>
-                                <span class="label">друзей</span>
-                            </div>
-                            <div class="stat">
-                                <span class="number">247</span>
-                                <span class="label">фото</span>
-                            </div>
-                            <div class="stat">
-                                <span class="number">5.7K</span>
-                                <span class="label">подписчиков</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="profile-actions">
-                    <button class="profile-btn primary" onclick="openLink('https://vk.com/razhrushytel')">
-                        <i class="fas fa-external-link-alt"></i> Открыть страницу
-                    </button>
-                    <button class="profile-btn secondary" onclick="openLink('https://vk.com/write123456789')">
-                        <i class="fas fa-comment"></i> Написать сообщение
-                    </button>
-                </div>
-
-                <div class="profile-bio">
-                    <h4>О себе</h4>
-                    <p>Создаю контент, играю в игры, общаюсь с интересными людьми. Люблю хорошую музыку и качественный юмор.</p>
-                </div>
+            <div class="socials-grid" id="socialsGrid">
+                <!-- Ссылки будут здесь -->
             </div>
         </main>
 
@@ -219,70 +213,18 @@
         <main class="content-section" id="friendsSection">
             <div class="section-header">
                 <h2><i class="fas fa-user-friends"></i> Мои кенты</h2>
-                <p>Мои близкие друзья и проверенные люди</p>
+                <p id="friendsDescriptionDisplay">Мои близкие друзья и проверенные люди</p>
             </div>
             
-            <div class="friends-grid">
-                <div class="friend-item" onclick="openLink('https://t.me/CRIATIV_TRABKA')">
-                    <div class="friend-avatar">C</div>
-                    <div class="friend-info">
-                        <div class="friend-name">CRIATIV_TRABKA</div>
-                        <div class="friend-handle">@CRIATIV_TRABKA</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
-
-                <div class="friend-item" onclick="openLink('https://t.me/KingOfTheKnife')">
-                    <div class="friend-avatar">K</div>
-                    <div class="friend-info">
-                        <div class="friend-name">KingOfTheKnife</div>
-                        <div class="friend-handle">@KingOfTheKnife</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
-
-                <div class="friend-item" onclick="openLink('https://t.me/Achenw')">
-                    <div class="friend-avatar">A</div>
-                    <div class="friend-info">
-                        <div class="friend-name">Achenw</div>
-                        <div class="friend-handle">@Achenw</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
-
-                <div class="friend-item" onclick="openLink('https://t.me/PowluVsenaxy')">
-                    <div class="friend-avatar">P</div>
-                    <div class="friend-info">
-                        <div class="friend-name">PowluVsenaxy</div>
-                        <div class="friend-handle">@PowluVsenaxy</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
-
-                <div class="friend-item" onclick="openLink('https://t.me/Daniyar_Isimov')">
-                    <div class="friend-avatar">D</div>
-                    <div class="friend-info">
-                        <div class="friend-name">Daniyar Isimov</div>
-                        <div class="friend-handle">@Daniyar_Isimov</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
-
-                <div class="friend-item" onclick="openLink('https://t.me/Nev2rot')">
-                    <div class="friend-avatar">N</div>
-                    <div class="friend-info">
-                        <div class="friend-name">Nev2rot</div>
-                        <div class="friend-handle">@Nev2rot</div>
-                    </div>
-                    <i class="fab fa-telegram"></i>
-                </div>
+            <div class="friends-grid" id="friendsGrid">
+                <!-- Кенты будут здесь -->
             </div>
         </main>
 
         <!-- Футер -->
         <footer class="footer">
             <p>REAL_NEFORMAL</p>
-            <p class="footer-text">Данный сайт является моим био и здесь собрана информация про меня. Так что смотрите и изучайте :)</p>
+            <p class="footer-text" id="footerTextDisplay">Данный сайт является моим био и здесь собрана информация про меня. Так что смотрите и изучайте :)</p>
         </footer>
     </div>
 
