@@ -36,7 +36,7 @@ function copyEmail() {
 document.addEventListener('DOMContentLoaded', function() {
     // Плавное появление контента
     setTimeout(() => {
-        const elements = document.querySelectorAll('.profile-card, .friend-item');
+        const elements = document.querySelectorAll('.profile-card, .about-card');
         elements.forEach((el, index) => {
             setTimeout(() => {
                 el.style.opacity = '1';
