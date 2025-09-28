@@ -1,144 +1,68 @@
-// Инициализация
-document.addEventListener('DOMContentLoaded', function() {
-    // Скрываем прелоадер через 2 секунды
-    setTimeout(() => {
-        document.querySelector('.preloader').style.display = 'none';
-        document.getElementById('enterScreen').style.display = 'flex';
-    }, 2000);
-});
-
-// Переменные
-let isSoundOn = true;
-let currentSection = 'steam';
-
-// Вход на сайт
-function enterSite() {
-    const enterScreen = document.getElementById('enterScreen');
-    const mainContent = document.getElementById('mainContent');
-    
-    // Анимация исчезновения
-    enterScreen.style.opacity = '0';
-    enterScreen.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        enterScreen.style.display = 'none';
-        mainContent.style.display = 'block';
-        
-        // Запускаем видео
-        initVideo();
-        
-        // Показываем первую секцию
-        showSection('steam');
-    }, 500);
-}
-
-// Инициализация видео
-function initVideo() {
-    const video = document.getElementById('bgVideo');
-    if (video) {
-        video.muted = !isSoundOn;
-        video.play().catch(e => {
-            console.log('Видео запущено');
-        });
-    }
-}
-
-// Переключение звука
-function toggleSound() {
-    const video = document.getElementById('bgVideo');
-    const soundBtn = document.getElementById('soundBtn');
-    
-    if (video) {
-        isSoundOn = !isSoundOn;
-        video.muted = !isSoundOn;
-        
-        soundBtn.innerHTML = isSoundOn ? 
-            '<i class="fas fa-volume-up"></i>' : 
-            '<i class="fas fa-volume-mute"></i>';
-    }
-}
-
-// Переключение мобильного меню
-function toggleMobileMenu() {
-    const nav = document.querySelector('.main-nav');
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    
-    nav.classList.toggle('active');
-    menuBtn.classList.toggle('active');
-}
-
-// Показать секцию
-function showSection(sectionId) {
-    // Скрываем все секции
-    document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // Убираем активный класс у всех ссылок
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    
-    // Показываем выбранную секцию
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.classList.add('active');
-    }
-    
-    // Активируем соответствующую ссылку
-    const targetLink = document.querySelector(`[data-section="${sectionId}"]`);
-    if (targetLink) {
-        targetLink.classList.add('active');
-    }
-    
-    currentSection = sectionId;
-    
-    // На мобильных закрываем меню после выбора
-    if (window.innerWidth <= 768) {
-        toggleMobileMenu();
-    }
-}
-
-// Открытие ссылок
+// Функция открытия ссылок
 function openLink(url) {
-    if (url) {
+    if (url && url.startsWith('http') || url.startsWith('mailto') || url.startsWith('steam')) {
         window.open(url, '_blank');
     }
 }
 
-// Копирование email
-function copyEmail() {
-    const email = 'Anton4iko2@yandex.ru';
-    navigator.clipboard.writeText(email).then(() => {
-        // Создаем уведомление
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            z-index: 10000;
-            animation: slideInRight 0.3s ease;
-        `;
-        notification.textContent = 'Email скопирован!';
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }).catch(() => {
-        alert('Email: ' + email);
+// Переключение секций
+function showSection(sectionName) {
+    // Убрать активный класс у всех кнопок
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
     });
+    
+    // Скрыть все секции
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Активировать выбранную кнопку
+    event.target.classList.add('active');
+    
+    // Показать выбранную секцию
+    document.getElementById(sectionName + 'Section').classList.add('active');
 }
 
-// Обработчики событий
+// Анимации
+function startAnimations() {
+    // Случайное свечение заголовка
+    setInterval(() => {
+        const glow = document.querySelector('.site-title');
+        glow.style.textShadow = `0 0 ${20 + Math.random() * 10}px rgba(255, 0, 102, ${0.3 + Math.random() * 0.3})`;
+    }, 2000);
+    
+    // Анимация карточек при загрузке
+    setTimeout(() => {
+        const cards = document.querySelectorAll('.social-item, .friend-item, .profile-card');
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 500);
+}
+
+// Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработчики для навигационных ссылок
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const sectionId = this.getAttribute('data-section');
-           
+    startAnimations();
+    
+    // Плавное появление контента
+    const elements = document.querySelectorAll('.social-item, .friend-item, .profile-card');
+    elements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'all 0.5s ease';
+    });
+});
+
+// Параллакс эффект для фона
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const video = document.querySelector('.video-background');
+    const particles = document.querySelector('.floating-particles');
+    
+    if (video) video.style.transform = `translateY(${scrolled * 0.4}px)`;
+    if (particles) particles.style.transform = `translateY(${scrolled * 0.2}px)`;
+});
