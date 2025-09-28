@@ -2,41 +2,39 @@
 const video = document.getElementById('bgVideo');
 const muteBtn = document.getElementById('muteBtn');
 const volumeControl = document.getElementById('volumeControl');
+const enterScreen = document.getElementById('enterScreen');
+const mainSite = document.getElementById('mainSite');
 
-// Флаг первого клика
-let userInteracted = false;
+// Вход на сайт
+function enterSite() {
+    // Анимация исчезновения экрана входа
+    enterScreen.style.opacity = '0';
+    enterScreen.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        enterScreen.style.display = 'none';
+        mainSite.style.display = 'block';
+        
+        // Запускаем видео со звуком после входа
+        initVideo();
+    }, 500);
+}
 
 // Инициализация видео
 function initVideo() {
     if (video) {
-        // Начинаем с muted, чтобы видео запустилось
-        video.muted = true;
-        video.volume = 0;
+        // Включаем звук сразу, так как было взаимодействие
+        video.muted = false;
+        video.volume = 0.3;
         video.play().catch(e => {
-            console.log('Видео запущено без звука');
+            console.log('Видео запущено');
         });
-    }
-}
-
-// Обработчик первого клика по странице
-function handleFirstInteraction() {
-    if (!userInteracted) {
-        userInteracted = true;
-        // Включаем звук после первого клика
-        if (video) {
-            video.muted = false;
-            video.volume = 0.3;
-            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-        }
-        // Убираем обработчик после первого клика
-        document.removeEventListener('click', handleFirstInteraction);
     }
 }
 
 // Управление звуком видео
 if (muteBtn && video) {
-    muteBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Чтобы не считалось за первый клик
+    muteBtn.addEventListener('click', () => {
         video.muted = !video.muted;
         muteBtn.innerHTML = video.muted ? 
             '<i class="fas fa-volume-mute"></i>' : 
@@ -48,11 +46,6 @@ if (muteBtn && video) {
 if (volumeControl && video) {
     volumeControl.addEventListener('input', (e) => {
         video.volume = e.target.value;
-        // Если включаем громкость - убираем mute
-        if (e.target.value > 0) {
-            video.muted = false;
-            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-        }
     });
 }
 
@@ -89,25 +82,6 @@ function copyEmail() {
         alert('Email скопирован: ' + email);
     });
 }
-
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    initVideo();
-    
-    // Добавляем обработчик первого клика
-    document.addEventListener('click', handleFirstInteraction);
-    
-    // Плавное появление контента
-    setTimeout(() => {
-        const elements = document.querySelectorAll('.profile-card, .friend-item');
-        elements.forEach((el, index) => {
-            setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-    }, 500);
-});
 
 // Параллакс эффект
 window.addEventListener('scroll', () => {
