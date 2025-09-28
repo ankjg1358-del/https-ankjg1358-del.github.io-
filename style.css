@@ -1,81 +1,28 @@
-/* Управление звуком */
+/* Улучшенное управление звуком */
 .audio-controls {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
-}
-
-.audio-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.audio-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-/* Аватарки для разных секций */
-.tiktok-avatar {
-    background: linear-gradient(45deg, #ff0050, #000000) !important;
-}
-
-.email-avatar {
-    background: linear-gradient(45deg, #ea4335, #4285f4) !important;
-}
-
-/* Исправление навигации */
-.navigation {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-}
-
-.nav-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    padding: 12px 20px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
 }
 
-.nav-btn.active {
-    background: #ff0066;
-    border-color: #ff0066;
-    box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+.volume-slider {
+    width: 80px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+.audio-controls:hover .volume-slider {
+    opacity: 1;
 }
 
-/* Секции */
-.content-section {
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-
-.content-section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+#volumeControl {
+    width: 100%;
 }
