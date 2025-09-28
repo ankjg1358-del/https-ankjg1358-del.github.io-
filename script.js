@@ -3,21 +3,40 @@ const video = document.getElementById('bgVideo');
 const muteBtn = document.getElementById('muteBtn');
 const volumeControl = document.getElementById('volumeControl');
 
+// Флаг первого клика
+let userInteracted = false;
+
 // Инициализация видео
 function initVideo() {
     if (video) {
-        // Устанавливаем начальные настройки
-        video.volume = 0.3; // 30% громкости
-        video.muted = false; // Включаем звук
+        // Начинаем с muted, чтобы видео запустилось
+        video.muted = true;
+        video.volume = 0;
         video.play().catch(e => {
-            console.log('Автозапуск видео заблокирован, требуется взаимодействие');
+            console.log('Видео запущено без звука');
         });
+    }
+}
+
+// Обработчик первого клика по странице
+function handleFirstInteraction() {
+    if (!userInteracted) {
+        userInteracted = true;
+        // Включаем звук после первого клика
+        if (video) {
+            video.muted = false;
+            video.volume = 0.3;
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+        // Убираем обработчик после первого клика
+        document.removeEventListener('click', handleFirstInteraction);
     }
 }
 
 // Управление звуком видео
 if (muteBtn && video) {
-    muteBtn.addEventListener('click', () => {
+    muteBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Чтобы не считалось за первый клик
         video.muted = !video.muted;
         muteBtn.innerHTML = video.muted ? 
             '<i class="fas fa-volume-mute"></i>' : 
@@ -29,6 +48,11 @@ if (muteBtn && video) {
 if (volumeControl && video) {
     volumeControl.addEventListener('input', (e) => {
         video.volume = e.target.value;
+        // Если включаем громкость - убираем mute
+        if (e.target.value > 0) {
+            video.muted = false;
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
     });
 }
 
@@ -69,6 +93,9 @@ function copyEmail() {
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     initVideo();
+    
+    // Добавляем обработчик первого клика
+    document.addEventListener('click', handleFirstInteraction);
     
     // Плавное появление контента
     setTimeout(() => {
